@@ -1,6 +1,5 @@
 .App {
     margin: 30px;
-    /* text-align: center; */
 }
 
 .App div {
@@ -14,14 +13,20 @@
     background: orange;
 }
 
-.UI {
+.UI td {
+    border: 0px;
+    padding: 2px;
+}
+
+input.MessageTextBox {
+    width: 30em;
 }
 
 .ChatBoard {
 }
 
 .ChatBoard table {
-    border-collapse:  collapse; /* セルの線を重ねる */
+    border-collapse:  collapse;
 }
 
 .ChatBoard th, td {
