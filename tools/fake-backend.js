@@ -1,12 +1,16 @@
 var http = require('http');
 var server = http.createServer();
 
+var request_count = 0;
+
 server.on('request', function(request, response) {
+  request_count += 1;
+  console.log("#" + request_count + " " + request.url);
   switch(request.url) {
   case '/publish':
     publish_message(request, response);
     break;
-  case '/get':
+  case '/read':
     get_messages(request, response);
     break;
   default:
@@ -16,7 +20,7 @@ server.on('request', function(request, response) {
   }
 });
 
-var database = [];
+var database = [{timestamp: new Date(), message: "backend started."}];
 function get_messages(request, response) {
   response.setHeader('Content-Type', 'application/json');
   response.write(JSON.stringify(database));
