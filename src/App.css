@@ -3,7 +3,10 @@
 }
 
 .Warning {
-    background: red;
+    background: white;
+    border: 2px solid #FF3333;
+    margin-bottom: 10px;
+    color: red;
 }
 
 .App div {
@@ -11,10 +14,11 @@
 }
 
 .Title {
+    background: #66CCFF;
+    border: 2px solid #0099FF;
     font-size: 1.4em;
     height: 3em;
     line-height: 3em;
-    background: orange;
 }
 
 .UI td {
@@ -30,10 +34,22 @@ input.MessageTextBox {
 }
 
 .ChatBoard table {
-    border-collapse:  collapse;
+    border-collapse: collapse;
+    table-layout: fixed;
 }
 
+.ChatBoard .Timestamp {
+    text-align: center;
+}
+
+.ChatBoard .Message {
+    min-width: 20em;
+}
 .ChatBoard th, td {
     border: solid 1px;
     padding: 8px;
+}
+
+.ChatBoard thead th {
+    background-color: #99FFCC;
 }
