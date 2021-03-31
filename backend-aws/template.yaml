@@ -1,0 +1,64 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  chat-backend
+
+Globals:
+  Api:
+    Cors:
+      AllowOrigin: "'*'"
+      # AllowOrigin: "'https://example.s3-ap-northeast-1.amazonaws.com'"
+      AllowMethods: "'POST, GET'"
+      AllowHeaders: "'Origin, X-Requested-With, Content-Type, Accept'"
+      AllowCredentials: True
+  Function:
+    Timeout: 3
+
+Resources:
+  ChatFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: chat/
+      Handler: app.lambda_handler
+      Runtime: python3.8
+      Policies: AmazonDynamoDBFullAccess
+      Events:
+        Read:
+          Type: Api
+          Properties:
+            Path: /read
+            Method: get
+        Publish:
+          Type: Api
+          Properties:
+            Path: /publish
+            Method: post
+      Environment:
+        Variables:
+          CHAT_TABLE_NAME: !Ref ChatTable
+
+  ChatTable:
+    Type: 'AWS::DynamoDB::Table'
+    Properties:
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: room_id
+          AttributeType: S
+        - AttributeName: timestamp
+          AttributeType: S
+      KeySchema:
+        - AttributeName: room_id
+          KeyType: HASH
+        - AttributeName: timestamp
+          KeyType: RANGE
+
+Outputs:
+  ChatApi:
+    Description: "API Gateway endpoint URL for Prod stage for Chat function"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/"
+  ChatFunction:
+    Description: "Chat Lambda Function ARN"
+    Value: !GetAtt ChatFunction.Arn
+  ChatFunctionIamRole:
+    Description: "Implicit IAM Role created for Chat function"
+    Value: !GetAtt ChatFunctionRole.Arn
